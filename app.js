@@ -43,8 +43,6 @@ const userSchema = {
 const User = mongoose.model("User", userSchema);
 
 app.post("/createUser", function (req, res) {
-  console.log(req.body);
-
   const newUser = new User({
     username: req.body.username,
     password: md5(req.body.password),
@@ -76,20 +74,49 @@ app.get("/getUsers", function (req, res) {
 });
 
 
-app.post("/user/:uname/:pword" ,function(req,res){
-    User.findOne({username: req.params.uname} && {password: md5(req.params.pword)}, function(err, foundUser){
+app.post("/user/login", function(req,res){
+    User.findOne({username: req.body.username} && {password: md5(req.body.password)}, function(err, foundUser){
         if(!err){
             if(foundUser){
                 res.send(foundUser._id);
             }else{
-                res.send("incorrect details");
+                res.send(err);
             }
         }else{
-            res.status(500);
+            res.status(500).send("error occured");
         }
     });
 });
 
+app.get("/user/get", function(req, res){
+     User.findOne({_id: req.headers.accesstoken}, function(err, foundUser){
+         if(!err){
+             res.send(foundUser);
+         }else{
+             res.send("Not Found any user with this access token");
+         }
+     })  
+});
+
+app.put("/user/delete", function(req, res){
+    User.deleteOne({_id: req.headers.accesstoken}, function(err){
+        if(!err){
+            res.send("sucessfully deleted user");
+        }else{
+            res.status(400).send("error occured");
+        }
+    });
+});
+
+app.get("/users/list/:page", function(req, res){
+    User.find(function (err, foundUsers) {
+        if (!err) {
+          res.send(foundUsers);
+        } else {
+          res.send(err);
+        }
+      }).skip((req.params.page)* 10).limit(10);
+});
 app.listen(3000, function () {
   console.log("server started at host 3000");
 });
