@@ -12,8 +12,18 @@
     "express": "^4.17.1",
     "md5": "^2.3.0",
     "mongoose": "^5.10.5",
-    "nodemon": "^2.0.4"
+    "node": "^14.11.0",
+    "nodemon": "^2.0.4",
+    "reverse-md5": "0.0.4"
   },
   "devDependencies": {},
-  "description": ""
+  "description": "Create a route for registration /user/register of type POST It will take parameters username, password, confirm password, email id, firstname, lastname In route it should verify that username is unique, email is also unique, password conf password match. Password need to be encrypted If everything matches it should save data is users collection User proper mongo validation, populate functions etc from mongoose. Properly understand the use of different sections in above blog and implement it. After registration user should be saved in database.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remixrajat/login-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/remixrajat/login-api/issues"
+  },
+  "homepage": "https://github.com/remixrajat/login-api#readme"
 }

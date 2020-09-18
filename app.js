@@ -75,6 +75,21 @@ app.get("/getUsers", function (req, res) {
   });
 });
 
+
+app.post("/user/:uname/:pword" ,function(req,res){
+    User.findOne({username: req.params.uname} && {password: md5(req.params.pword)}, function(err, foundUser){
+        if(!err){
+            if(foundUser){
+                res.send(foundUser._id);
+            }else{
+                res.send("incorrect details");
+            }
+        }else{
+            res.status(500);
+        }
+    });
+});
+
 app.listen(3000, function () {
   console.log("server started at host 3000");
 });
